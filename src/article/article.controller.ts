@@ -16,7 +16,6 @@ import { CreateArticleDto } from './dto/create-article.dto';
 import { UpdateArticleDto } from './dto/update-article.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { JwtAuthGuard } from 'src/auth/jwt.authguard';
 
 @Controller('article')
 export class ArticleController {
@@ -48,13 +47,13 @@ export class ArticleController {
   }
 
   @Put(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard())
   async updateArticle(
     @Param('id')
     id: string,
     @Body()
     article: UpdateArticleDto,
-    @Req() req: any
+    @Req() req
   ): Promise<Article> {
 
     const userId = req.user?.id;
@@ -75,16 +74,16 @@ export class ArticleController {
   }
 
   @Delete(':id')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthGuard())
   async deleteArticle(
     @Param('id') articleId: string,
-    @Req() req: any
+    @Req() req
     ): Promise<string> {
     
     const userId = req.user?.id;
 
     if (!userId) {
-      throw new Error('User not authenticated');
+      throw Error('User not authenticated');
     }
 
     return this.articleService.deleteArticle(articleId, userId);

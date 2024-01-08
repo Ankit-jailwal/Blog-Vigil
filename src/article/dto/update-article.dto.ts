@@ -3,7 +3,6 @@ import {
     IsEmpty,
     IsOptional,
     IsString,
-    isArray,
   } from 'class-validator';
 import { User } from 'src/auth/schema/user.schema';
 import { CreateCommentDto } from './create-comment.dto';

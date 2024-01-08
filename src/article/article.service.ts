@@ -35,10 +35,15 @@ export class ArticleService {
   }
 
   async create(article: Article, user: User): Promise<Article> {
-    const data = Object.assign(article, { user: user._id });
-    const res = await this.articleModel.create(data);
-    return res;
+    try {
+      const data = Object.assign(article, { user: user._id });
+      const res = await this.articleModel.create(data);
+      return res;
+    } catch (error) {
+      throw new Error('Failed to create the article');
+    }
   }
+  
 
   async findById(id: string): Promise<Article> {
     const isValidId = mongoose.isValidObjectId(id);
